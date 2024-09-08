@@ -8,6 +8,6 @@ public class MoveCamera : MonoBehaviour
 
     private void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, cameraPosition.position, Time.deltaTime * 10f);
+        transform.position = cameraPosition.position;
     }
 }

@@ -276,8 +276,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d825ca1ae5db309458e3607d292024a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensX: 125
-  sensY: 125
+  sensX: 2
+  sensY: 2
+  orientation: {fileID: 2064114834}
 --- !u!114 &86779332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,7 +631,7 @@ Transform:
   m_GameObject: {fileID: 476145751}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.33, y: 1.69, z: 0}
+  m_LocalPosition: {x: 3.35, y: 1.69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -649,6 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257309247bba06e4fb80dbd9a4e35c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraPosition: {fileID: 1639540599}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,6 +816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1311703894}
   - component: {fileID: 1311703895}
+  - component: {fileID: 1311703896}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -866,6 +869,20 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1311703896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311703893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7b252500a7fac1478f38cd538cbff58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 7
+  orientation: {fileID: 2064114834}
 --- !u!1 &1639540598
 GameObject:
   m_ObjectHideFlags: 0

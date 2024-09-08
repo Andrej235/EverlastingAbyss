@@ -881,7 +881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b252500a7fac1478f38cd538cbff58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 22
+  moveSpeed: 20
   orientation: {fileID: 2064114834}
   drag: 16
   playerHeight: 2

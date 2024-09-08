@@ -90,10 +90,21 @@ public class PlayerMovement : MonoBehaviour
         Vector3 flatVelocity = new Vector3(playerRigidbody.velocity.x, 0f, playerRigidbody.velocity.z);
 
         // Limit velocity if needed
-        if (flatVelocity.magnitude > moveSpeed)
+        if (!isGrounded)
         {
-            Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
-            playerRigidbody.velocity = new Vector3(limitedVelocity.x, playerRigidbody.velocity.y, limitedVelocity.z);
+            if (flatVelocity.magnitude * airMultiplier > moveSpeed)
+            {
+                Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed * airMultiplier;
+                playerRigidbody.velocity = new Vector3(limitedVelocity.x, playerRigidbody.velocity.y, limitedVelocity.z);
+            }
+        }
+        else
+        {
+            if (flatVelocity.magnitude > moveSpeed)
+            {
+                Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
+                playerRigidbody.velocity = new Vector3(limitedVelocity.x, playerRigidbody.velocity.y, limitedVelocity.z);
+            }
         }
     }
 

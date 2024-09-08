@@ -881,12 +881,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b252500a7fac1478f38cd538cbff58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 12
+  moveSpeed: 20
   orientation: {fileID: 2064114834}
-  drag: 10
-  jumpForce: 12
-  jumpCooldown: 2
+  drag: 16
+  jumpForce: 16
+  jumpCooldown: 1
   airMultiplier: 0.4
+  fallMultiplier: 2
   playerHeight: 2
   ground:
     serializedVersion: 2

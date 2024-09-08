@@ -11,10 +11,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform orientation;
     [SerializeField] private float drag;
 
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpCooldown;
+    [SerializeField] private float airMultiplier;
+    [SerializeField] private float fallMultiplier;
+    private bool isJumpReady;
+
+
     [Header("Ground check")]
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask ground;
     private bool isGrounded;
+
+    [Header("Keybinds")]
+    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
 
     private float horizontalInput;
     private float verticalInput;
@@ -25,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     {
         playerRigidbody = GetComponent<Rigidbody>();
         playerRigidbody.freezeRotation = true;
+        isJumpReady = true;
     }
 
     private void Update()
@@ -42,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         MovePlayer();
+
+        ApplyExtraGravity();
     }
 
     private void GetInputs()
@@ -49,6 +62,15 @@ public class PlayerMovement : MonoBehaviour
         // Get player inputs
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetKey(jumpKey) && isJumpReady && isGrounded)
+        {
+            isJumpReady = false;
+
+            Jump();
+
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
     }
 
     private void MovePlayer()
@@ -57,7 +79,10 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         // Move player
-        playerRigidbody.AddForce(10f * moveSpeed * moveDirection.normalized, ForceMode.Force);
+        if (isGrounded)
+            playerRigidbody.AddForce(10f * moveSpeed * moveDirection.normalized, ForceMode.Force);
+        else
+            playerRigidbody.AddForce(10f * moveSpeed * airMultiplier * moveDirection.normalized, ForceMode.Force);
     }
 
     private void SpeedControl()
@@ -70,5 +95,27 @@ public class PlayerMovement : MonoBehaviour
             Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
             playerRigidbody.velocity = new Vector3(limitedVelocity.x, playerRigidbody.velocity.y, limitedVelocity.z);
         }
+    }
+
+    private void Jump()
+    {
+        // Reset y velocity
+        playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, 0f, playerRigidbody.velocity.z);
+
+        playerRigidbody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+
+    private void ApplyExtraGravity()
+    {
+        // Apply additional gravity when player is falling
+        if (!isGrounded && playerRigidbody.velocity.y < 0)
+        {
+            playerRigidbody.AddForce(fallMultiplier * Physics.gravity.y * Vector3.up, ForceMode.Acceleration);
+        }
+    }
+
+    private void ResetJump()
+    {
+        isJumpReady = true;
     }
 }

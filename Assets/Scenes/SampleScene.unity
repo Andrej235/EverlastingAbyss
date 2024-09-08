@@ -881,13 +881,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b252500a7fac1478f38cd538cbff58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 20
+  moveSpeed: 12
   orientation: {fileID: 2064114834}
-  drag: 16
+  drag: 10
+  jumpForce: 12
+  jumpCooldown: 2
+  airMultiplier: 0.4
   playerHeight: 2
   ground:
     serializedVersion: 2
     m_Bits: 8
+  jumpKey: 32
 --- !u!1 &1639540598
 GameObject:
   m_ObjectHideFlags: 0

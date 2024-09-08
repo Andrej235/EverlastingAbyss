@@ -712,7 +712,7 @@ GameObject:
   - component: {fileID: 1228727403}
   - component: {fileID: 1228727402}
   - component: {fileID: 1228727401}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -881,8 +881,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b252500a7fac1478f38cd538cbff58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
+  moveSpeed: 22
   orientation: {fileID: 2064114834}
+  drag: 16
+  playerHeight: 2
+  ground:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &1639540598
 GameObject:
   m_ObjectHideFlags: 0

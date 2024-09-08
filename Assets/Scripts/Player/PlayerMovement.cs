@@ -7,25 +7,34 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
 
     [SerializeField] private float moveSpeed;
-
     [SerializeField] private Transform orientation;
+    [SerializeField] private float drag;
 
-    float horizontalInput;
-    float verticalInput;
+    [Header("Ground check")]
+    [SerializeField] private float playerHeight;
+    [SerializeField] private LayerMask ground;
+    private bool isGrounded;
 
-    Vector3 moveDirection;
-
-    Rigidbody rb;
+    private float horizontalInput;
+    private float verticalInput;
+    private Vector3 moveDirection;
+    private Rigidbody playerRigidbody;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        playerRigidbody = GetComponent<Rigidbody>();
+        playerRigidbody.freezeRotation = true;
     }
 
     private void Update()
     {
+        // Check if player is grounded
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, ground);
+
         GetInputs();
+
+        // Handle drag
+        playerRigidbody.drag = (isGrounded) ? drag : 0;
     }
 
     private void FixedUpdate()
@@ -46,6 +55,6 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
         // Move player
-        rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        playerRigidbody.AddForce(10f * moveSpeed * moveDirection.normalized, ForceMode.Force);
     }
 }

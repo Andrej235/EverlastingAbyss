@@ -884,10 +884,10 @@ MonoBehaviour:
   moveSpeed: 20
   orientation: {fileID: 2064114834}
   drag: 16
-  jumpForce: 16
+  jumpForce: 12
   jumpCooldown: 1
-  airMultiplier: 0.4
-  fallMultiplier: 2
+  airMultiplier: 1
+  fallMultiplier: 4
   playerHeight: 2
   ground:
     serializedVersion: 2

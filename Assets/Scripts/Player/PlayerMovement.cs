@@ -1,6 +1,3 @@
-using ModestTree;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -38,9 +35,9 @@ public class PlayerMovement : MonoBehaviour
 
     private enum MovementState
     {
-        walking,
-        sprinting,
-        air
+        Walking,
+        Sprinting,
+        Air
     }
 
     private void Start()
@@ -53,14 +50,14 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         // Check if player is grounded
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, ground);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, (playerHeight * 0.5f) + 0.2f, ground);
 
         GetInputs();
         SpeedControl();
         MovementStateHandler();
 
         // Handle drag
-        playerRigidbody.drag = (isGrounded) ? drag : 0;
+        playerRigidbody.drag = isGrounded ? drag : 0;
     }
 
     private void FixedUpdate()
@@ -89,46 +86,50 @@ public class PlayerMovement : MonoBehaviour
     private void MovementStateHandler()
     {
         // Mode - Sprinting
-        if(isGrounded && Input.GetKey(sprintKey))
+        if (isGrounded && Input.GetKey(sprintKey))
         {
-            movementState = MovementState.sprinting;
+            movementState = MovementState.Sprinting;
             moveSpeed = sprintSpeed;
         }
         // Mode - Walking
-        else if(isGrounded)
+        else if (isGrounded)
         {
-            movementState = MovementState.walking;
+            movementState = MovementState.Walking;
             moveSpeed = walkSpeed;
         }
         // Mode - Air
         else
         {
-            movementState= MovementState.air;
+            movementState = MovementState.Air;
         }
     }
 
     private void MovePlayer()
     {
         // Calculate movement direction
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        moveDirection = (orientation.forward * verticalInput) + (orientation.right * horizontalInput);
 
         // Move player
         if (isGrounded)
+        {
             playerRigidbody.AddForce(10f * moveSpeed * moveDirection.normalized, ForceMode.Force);
+        }
         else
+        {
             playerRigidbody.AddForce(10f * moveSpeed * airMultiplier * moveDirection.normalized, ForceMode.Force);
+        }
     }
 
     private void SpeedControl()
     {
-        Vector3 flatVelocity = new Vector3(playerRigidbody.velocity.x, 0f, playerRigidbody.velocity.z);
+        Vector3 flatVelocity = new(playerRigidbody.velocity.x, 0f, playerRigidbody.velocity.z);
 
         // Limit velocity if needed
         if (!isGrounded)
         {
             if (flatVelocity.magnitude * airMultiplier > moveSpeed)
             {
-                Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed * airMultiplier;
+                Vector3 limitedVelocity = airMultiplier * moveSpeed * flatVelocity.normalized;
                 playerRigidbody.velocity = new Vector3(limitedVelocity.x, playerRigidbody.velocity.y, limitedVelocity.z);
             }
         }
@@ -153,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
     private void ApplyExtraGravity()
     {
         // Apply additional gravity when player is falling
-        if (!isGrounded && playerRigidbody.velocity.y < 0)
+        if (!isGrounded)
         {
             playerRigidbody.AddForce(fallMultiplier * Physics.gravity.y * Vector3.up, ForceMode.Acceleration);
         }

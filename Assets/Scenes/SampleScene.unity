@@ -341,7 +341,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -881,18 +881,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b252500a7fac1478f38cd538cbff58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
-  orientation: {fileID: 2064114834}
+  sprintSpeed: 15
+  walkSpeed: 10
   drag: 5
   jumpForce: 12.5
-  jumpCooldown: 0.8
+  jumpCooldown: 0.5
   airMultiplier: 0.2
-  fallMultiplier: 1
+  fallMultiplier: 3
   playerHeight: 2
   ground:
     serializedVersion: 2
     m_Bits: 8
   jumpKey: 32
+  sprintKey: 304
+  orientation: {fileID: 2064114834}
 --- !u!1 &1639540598
 GameObject:
   m_ObjectHideFlags: 0

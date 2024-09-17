@@ -1,4 +1,5 @@
 using Scripts;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -6,6 +7,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float damage = 1f;
     [SerializeField] private float range = 1f;
     [SerializeField] private float attackRate = 1f;
+    [SerializeField] private int maxTargetsPerHit = 3;
     [SerializeField] private Transform orientation;
 
     private void Update()
@@ -19,18 +21,26 @@ public class PlayerAttack : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(orientation.position, orientation.position + (orientation.forward * range));
+        Gizmos.DrawSphere(orientation.position + (orientation.forward.normalized * 0.5f), range);
     }
 
     private void Attack()
     {
-        Debug.DrawLine(orientation.position, orientation.position + (orientation.forward * range), Color.red, 3f);
+        Collider[] hitColliders = new Collider[maxTargetsPerHit];
+        int hitCount = Physics.OverlapSphereNonAlloc(orientation.position + (orientation.forward.normalized * 0.5f), range, hitColliders);
+        print(hitCount);
 
-        if (!Physics.Raycast(transform.position, orientation.forward, out RaycastHit hit, range) || !hit.collider.TryGetComponent(out IDamageable damageable))
+        if (hitCount == 0)
         {
             return;
         }
 
-        damageable.DealDamage(damage);
+        foreach (Collider collider in hitColliders.Take(hitCount))
+        {
+            if (collider.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.DealDamage(damage);
+            }
+        }
     }
 }

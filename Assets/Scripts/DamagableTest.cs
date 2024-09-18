@@ -4,6 +4,8 @@ using UnityEngine;
 public class DamagableTest : MonoBehaviour, IDamageable
 {
     [SerializeField] private float health = 10;
+    private new Rigidbody rigidbody;
+    [SerializeField] private ForceMode forceMode = ForceMode.Impulse;
 
     public float Health
     {
@@ -15,14 +17,20 @@ public class DamagableTest : MonoBehaviour, IDamageable
             if (value <= 0)
             {
                 print("Object destroyed");
-                Destroy(gameObject);
+                //Destroy(gameObject);
             }
         }
     }
 
-    public void DealDamage(float damage)
+    private void Start() => rigidbody = GetComponent<Rigidbody>();
+
+    public void DealDamage(Damage damage)
     {
-        print("Damage dealt: " + damage);
-        Health -= damage;
+        print("Damage dealt: " + damage.Value);
+        Health -= damage.Value;
+
+        rigidbody.AddForce(damage.KnockbackDirection * damage.KnockbackIntensity, forceMode);
+
+        Debug.DrawLine(transform.position, transform.position + (damage.KnockbackDirection * damage.KnockbackIntensity), Color.red, 100);
     }
 }

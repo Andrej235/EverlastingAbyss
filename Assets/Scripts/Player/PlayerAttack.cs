@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] private float damage = 1f;
+    [SerializeField] private float knockback = 1f;
     [SerializeField] private float range = 1f;
     [SerializeField] private float attackRate = 1f;
     [SerializeField] private int maxTargetsPerHit = 3;
@@ -28,7 +29,7 @@ public class PlayerAttack : MonoBehaviour
     {
         Collider[] hitColliders = new Collider[maxTargetsPerHit];
         int hitCount = Physics.OverlapSphereNonAlloc(orientation.position + (orientation.forward.normalized * 0.5f), range, hitColliders);
-        print(hitCount);
+        //print(hitCount);
 
         if (hitCount == 0)
         {
@@ -39,7 +40,14 @@ public class PlayerAttack : MonoBehaviour
         {
             if (collider.TryGetComponent(out IDamageable damageable))
             {
-                damageable.DealDamage(damage);
+                //Vector3 direction = orientation.forward; //Add knockback based on the direction player is looking in
+                Vector3 direction = collider.transform.position - transform.position; //Add knockback based on player's position at the time of the attack
+                damageable.DealDamage(new()
+                {
+                    Value = damage,
+                    KnockbackIntensity = knockback,
+                    KnockbackDirection = direction
+                });
             }
         }
     }

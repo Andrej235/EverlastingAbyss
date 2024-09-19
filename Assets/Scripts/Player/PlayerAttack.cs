@@ -1,5 +1,4 @@
 using Scripts;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -11,12 +10,12 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private int maxTargetsPerHit = 3;
     [SerializeField] private Transform orientation;
 
+    private bool isAttackAvailable = true;
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-        {
             Attack();
-        }
     }
 
     private void OnDrawGizmos()
@@ -27,28 +26,31 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack()
     {
+        if (!isAttackAvailable)
+            return;
+
+        isAttackAvailable = false;
+        Invoke(nameof(ResetAttack), 1 / attackRate);
+
         Collider[] hitColliders = new Collider[maxTargetsPerHit];
         int hitCount = Physics.OverlapSphereNonAlloc(orientation.position + (orientation.forward.normalized * 0.5f), range, hitColliders);
-        //print(hitCount);
 
-        if (hitCount == 0)
+        for (int i = 0; i < hitCount; i++)
         {
-            return;
-        }
+            Collider collider = hitColliders[i];
+            if (!collider.TryGetComponent(out IDamageable damageable))
+                continue;
 
-        foreach (Collider collider in hitColliders.Take(hitCount))
-        {
-            if (collider.TryGetComponent(out IDamageable damageable))
+            //Vector3 direction = orientation.forward; //Add knockback based on the direction player is looking in
+            Vector3 direction = collider.transform.position - transform.position; //Add knockback based on player's position at the time of the attack
+            damageable.DealDamage(new()
             {
-                //Vector3 direction = orientation.forward; //Add knockback based on the direction player is looking in
-                Vector3 direction = collider.transform.position - transform.position; //Add knockback based on player's position at the time of the attack
-                damageable.DealDamage(new()
-                {
-                    Value = damage,
-                    KnockbackIntensity = knockback,
-                    KnockbackDirection = direction
-                });
-            }
+                Value = damage,
+                KnockbackIntensity = knockback,
+                KnockbackDirection = direction
+            });
         }
     }
+
+    private void ResetAttack() => isAttackAvailable = true;
 }

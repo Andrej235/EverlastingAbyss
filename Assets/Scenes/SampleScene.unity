@@ -4051,7 +4051,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  knockback: 750
+  knockback: 15
   range: 1
   attackRate: 1
   maxTargetsPerHit: 3

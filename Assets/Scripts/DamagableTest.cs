@@ -24,7 +24,7 @@ public class DamagableTest : MonoBehaviour, IDamageable
 
     private void Start() => rigidbody = GetComponent<Rigidbody>();
 
-    public void DealDamage(Damage damage)
+    public void TakeDamage(Damage damage)
     {
         print("Damage dealt: " + damage.Value);
         Health -= damage.Value;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -31,14 +32,10 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody playerRigidbody;
 
     [SerializeField] private Transform orientation;
-    private MovementState movementState;
+    private PlayerStateManager stateManager = null!;
 
-    private enum MovementState
-    {
-        Walking,
-        Sprinting,
-        Air
-    }
+    [Inject]
+    public void Constructor(PlayerStateManager stateManager) => this.stateManager = stateManager;
 
     private void Start()
     {
@@ -88,19 +85,19 @@ public class PlayerMovement : MonoBehaviour
         // Mode - Sprinting
         if (isGrounded && Input.GetKey(sprintKey))
         {
-            movementState = MovementState.Sprinting;
+            stateManager.WalkingState = PlayerStateManager.PlayerMovementState.Running;
             moveSpeed = sprintSpeed;
         }
         // Mode - Walking
         else if (isGrounded)
         {
-            movementState = MovementState.Walking;
+            stateManager.WalkingState = PlayerStateManager.PlayerMovementState.Walking;
             moveSpeed = walkSpeed;
         }
         // Mode - Air
         else
         {
-            movementState = MovementState.Air;
+            stateManager.WalkingState = PlayerStateManager.PlayerMovementState.InAir;
         }
     }
 
@@ -160,8 +157,5 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void ResetJump()
-    {
-        isJumpReady = true;
-    }
+    private void ResetJump() => isJumpReady = true;
 }

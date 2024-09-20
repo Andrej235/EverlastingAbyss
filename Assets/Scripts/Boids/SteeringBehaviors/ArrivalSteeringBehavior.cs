@@ -19,7 +19,7 @@ public class ArrivalSteeringBehavior : MonoBehaviour
         Vector3 desiredVelocity = target - position;
         float distance = desiredVelocity.magnitude;
         desiredVelocity = distance < slowingRadius
-            ? Vector3.Normalize(desiredVelocity) * maxVelocity * (distance / slowingRadius)
+            ? distance / slowingRadius * maxVelocity * Vector3.Normalize(desiredVelocity)
             : Vector3.Normalize(desiredVelocity) * maxVelocity;
 
         Vector3 steering = desiredVelocity - velocity;

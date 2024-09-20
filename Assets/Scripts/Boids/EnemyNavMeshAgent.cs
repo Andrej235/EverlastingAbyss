@@ -1,34 +1,25 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(SteeringBehaviorController))]
 public class EnemyNavMeshAgent : MonoBehaviour
 {
     [SerializeField] private Transform player;
     private NavMeshAgent agent;
-    private Vector3 velocity;
+    private SteeringBehaviorController steeringBehaviorController;
 
-    [SerializeField] private float maxVelocity = 3;
-    [SerializeField] private float maxForce = 15;
-    [SerializeField] private float minFleeDistance = 10;
-
-    private void Start() => agent = GetComponent<NavMeshAgent>();
+    private void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        steeringBehaviorController = GetComponent<SteeringBehaviorController>();
+    }
 
     private void Update()
     {
-        Vector3 target = player.position;
-        Vector3 position = transform.position;
+        agent.destination = steeringBehaviorController.GetNewVelocity();
 
-        if (Vector3.Distance(position, target) > minFleeDistance)
-            return;
-
-        Vector3 desiredVelocity = Vector3.Normalize(position - target) * maxVelocity; //For seeking, the only difference is (target - position) not (position - target)
-        Vector3 steering = desiredVelocity - velocity;
-        steering = Vector3.ClampMagnitude(steering, maxForce);
-
-        velocity = Vector3.ClampMagnitude(velocity + steering, maxVelocity);
-        agent.destination = transform.position + velocity;
-
-        Debug.DrawRay(transform.position, velocity.normalized * 2, Color.green);
-        Debug.DrawRay(transform.position, desiredVelocity.normalized * 2, Color.magenta);
+        //Debug.DrawRay(transform.position, steeringBehaviorController.GetNewVelocity(), Color.green);
+        //Debug.DrawRay(transform.position, agent.steeringTarget, Color.red);
     }
 }

@@ -5,7 +5,6 @@ public class ArrivalSteeringBehavior : MonoBehaviour
     [SerializeField] private Transform targetTransform;
     [SerializeField] private float maxVelocity = 3;
     [SerializeField] private float maxForce = 15;
-    [SerializeField] private float mass = 15;
     [SerializeField] private float slowingRadius = 3;
 
     private new Rigidbody rigidbody;
@@ -24,6 +23,7 @@ public class ArrivalSteeringBehavior : MonoBehaviour
             : Vector3.Normalize(desiredVelocity) * maxVelocity;
 
         Vector3 steering = desiredVelocity - velocity;
+        steering = Vector3.ClampMagnitude(steering, maxForce);
 
         velocity = Vector3.ClampMagnitude(velocity + steering, maxVelocity);
         rigidbody.velocity = velocity;

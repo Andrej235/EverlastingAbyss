@@ -5,7 +5,6 @@ public class FleeSteeringBehavior : MonoBehaviour
     [SerializeField] private Transform targetTransform;
     [SerializeField] private float maxVelocity = 3;
     [SerializeField] private float maxForce = 15;
-    [SerializeField] private float mass = 15;
     [SerializeField] private float minFleeDistance = 10;
 
     private new Rigidbody rigidbody;
@@ -22,9 +21,7 @@ public class FleeSteeringBehavior : MonoBehaviour
 
         Vector3 desiredVelocity = Vector3.Normalize(position - target) * maxVelocity; //For seeking, the only difference is (target - position) not (position - target)
         Vector3 steering = desiredVelocity - velocity;
-
         steering = Vector3.ClampMagnitude(steering, maxForce);
-        steering /= mass;
 
         velocity = Vector3.ClampMagnitude(velocity + steering, maxVelocity);
         rigidbody.velocity = velocity;

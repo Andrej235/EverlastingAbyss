@@ -18,7 +18,7 @@ public class SteeringBehaviorController : MonoBehaviour
 
     [Header("Wandering")]
     [SerializeField] private float circleDistance = 1;
-    [SerializeField] private float angleChange = 5;
+    [SerializeField] private float angleChange = 0.1f;
     [SerializeField] private float wanderAngle = 0;
 
     public Vector3 TargetPosition => targetTransform.position;
@@ -29,7 +29,11 @@ public class SteeringBehaviorController : MonoBehaviour
     public float SlowingRadius => slowingRadius;
     public float CircleDistance => circleDistance;
     public float AngleChange => angleChange;
-    public float WanderAngle => wanderAngle;
+    public float WanderAngle
+    {
+        get => wanderAngle;
+        set => wanderAngle = value;
+    }
     public Vector3 Velocity => velocity;
 
 

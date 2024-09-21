@@ -1746,14 +1746,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 792416149ed051f43a37ab597e6db096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  steeringBehavior: {fileID: 11400000, guid: a888dd64c9f05444e9da30cdaabfbd91, type: 2}
+  steeringBehavior: {fileID: 11400000, guid: 0c303b76511728c4da995d8e2967f3fe, type: 2}
   targetTransform: {fileID: 778068112}
   maxVelocity: 3
   maxForce: 15
   minFleeDistance: 10
   slowingRadius: 3
   circleDistance: 1
-  angleChange: 5
+  angleChange: 0.1
   wanderAngle: 0
 --- !u!1 &1995960749
 GameObject:

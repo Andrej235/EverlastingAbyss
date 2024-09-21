@@ -3,7 +3,7 @@
 [CreateAssetMenu(fileName = "WanderSteeringBehaviorSO", menuName = "Steering Behaviors/Wander")]
 public class WanderSteeringBehaviorSO : BaseSteeringBehaviorSO
 {
-    public override Vector3 GetSteeringDirection(SteeringBehaviorController steeringBehaviorController)
+    public override Vector3 GetDestination(SteeringBehaviorController steeringBehaviorController)
     {
         Vector3 velocity = steeringBehaviorController.Velocity;
         Vector3 circleCenter = velocity.normalized * steeringBehaviorController.CircleDistance; //Center of an imaginary circle in front of the entity which is used to steer the entity
@@ -14,6 +14,10 @@ public class WanderSteeringBehaviorSO : BaseSteeringBehaviorSO
         Vector3 wanderForce = circleCenter + displacement;
         wanderForce = Vector3.ClampMagnitude(wanderForce, steeringBehaviorController.MaxForce); //Limit influence of the wanderForce
 
-        return wanderForce;
+        velocity = Vector3.ClampMagnitude(velocity + wanderForce, steeringBehaviorController.MaxVelocity);
+        Vector3 newPosition = steeringBehaviorController.Position + velocity;
+
+        steeringBehaviorController.Velocity = velocity;
+        return newPosition;
     }
 }

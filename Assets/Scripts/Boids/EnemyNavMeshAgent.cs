@@ -17,7 +17,7 @@ public class EnemyNavMeshAgent : MonoBehaviour
 
     private void Update()
     {
-        agent.destination = steeringBehaviorController.GetNewVelocity();
+        agent.destination = steeringBehaviorController.GetNewDestination();
 
         //Debug.DrawRay(transform.position, steeringBehaviorController.GetNewVelocity(), Color.green);
         //Debug.DrawRay(transform.position, agent.steeringTarget, Color.red);

@@ -34,19 +34,16 @@ public class SteeringBehaviorController : MonoBehaviour
         get => wanderAngle;
         set => wanderAngle = value;
     }
-    public Vector3 Velocity => velocity;
-
-
-
-    private Vector3 velocity;
-
-    public Vector3 GetNewVelocity()
+    public Vector3 Velocity
     {
-        Vector3 steering = steeringBehavior.GetSteeringDirection(this);
-
-        velocity = Vector3.ClampMagnitude(velocity + steering, maxVelocity);
-        Vector3 newPosition = transform.position + velocity;
-
-        return newPosition;
+        get; set;
     }
+    public Vector3 TargetVelocity => targetVelocity;
+
+    public Vector3 GetNewDestination() => steeringBehavior.GetDestination(this);
+
+    private Vector3 targetVelocity;
+    private Rigidbody targetRigidbody;
+    private void Update() => targetVelocity = targetRigidbody.velocity.normalized;
+    private void Start() => targetRigidbody = targetTransform.GetComponent<Rigidbody>();
 }
